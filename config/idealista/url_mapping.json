@@ -1,0 +1,23 @@
+{
+  "operations": {
+    "sale": "comprar",
+    "rent": "arrendar"
+  },
+  "property_types": {
+    "new_homes" : "empreendimentos",
+    "homes":"casas",
+    "rooms": "quarto",
+    "garages": "garagens",
+    "storage_rooms": "arrecadacoes",
+    "land": "terrenos",
+    "offices": "escritorios",
+    "buisnes_transfers": "trespasse", 
+    "buildings_for_sale": "predios"
+  },
+"cities": {
+    "lisbon":"lisboa",
+    "porto": "porto" ,
+    "coimbra" :"coimbra"
+  }
+}
+
