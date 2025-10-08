@@ -1,0 +1,4 @@
+listing_id,url,scraped_at,operation,property_type,city,title,price,area,bedrooms,bathrooms,location,description,property_type_detail,status,completion_year,agency,contact_phone,features
+34068585,https://www.idealista.pt/en/imovel/34068585/,2025-10-06T13:25:08.957855,sale,apartments,lisbon,,,555 m²,,,"Santa Isabel, Campo de Ourique",,,,,,,
+33497186,https://www.idealista.pt/en/imovel/33497186/,2025-10-06T13:25:20.101622,sale,apartments,lisbon,,,577 m²,,,"Santa Isabel, Campo de Ourique",,,,,,,
+33497224,https://www.idealista.pt/en/imovel/33497224/,2025-10-06T13:25:31.955993,sale,apartments,lisbon,,,626 m²,,,"Santa Isabel, Campo de Ourique",,,,,,,

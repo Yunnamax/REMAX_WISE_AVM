@@ -1,0 +1,4 @@
+listing_id,url,scraped_at,operation,property_type,city,title,price,area,bedrooms,bathrooms,location,description,property_type_detail,status,completion_year,agency,contact_phone,features
+33497186,https://www.idealista.pt/en/imovel/33497186/,2025-10-06T13:20:12.712139,sale,apartments,lisbon,,,577 m²,,,,,,,,,,
+33497224,https://www.idealista.pt/en/imovel/33497224/,2025-10-06T13:20:21.696836,sale,apartments,lisbon,,,626 m²,,,,,,,,,,
+34068585,https://www.idealista.pt/en/imovel/34068585/,2025-10-06T13:20:31.840541,sale,apartments,lisbon,,,555 m²,,,,,,,,,,
