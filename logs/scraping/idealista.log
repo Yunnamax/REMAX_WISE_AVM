@@ -18,3 +18,43 @@
 2025-10-08 17:18:52,713 - scraper_idealista - INFO - Mapping loaded successfully
 2025-10-08 17:18:55,714 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-08T17-18-55//idealista_data.csv
 2025-10-08 17:24:48,172 - scraper_idealista - INFO - CSV file closed
+2025-10-09 01:27:55,647 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 01:27:55,695 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 01:27:55,712 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 01:28:06,501 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T01-28-06//idealista_data.csv
+2025-10-09 01:34:23,144 - scraper_idealista - INFO - CSV file closed
+2025-10-09 01:48:31,830 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 01:48:31,832 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 01:48:31,832 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 01:48:35,834 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T01-48-35//idealista_data.csv
+2025-10-09 01:59:36,943 - scraper_idealista - INFO - CSV file closed
+2025-10-09 02:11:30,170 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 02:11:30,171 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 02:11:30,172 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 02:11:34,120 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T02-11-34//idealista_data.csv
+2025-10-09 02:41:53,854 - scraper_idealista - INFO - CSV file closed
+2025-10-09 17:06:39,309 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 17:06:39,357 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 17:06:39,371 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 17:06:44,479 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T17-06-44//idealista_data.csv
+2025-10-09 17:12:18,406 - scraper_idealista - INFO - CSV file closed
+2025-10-09 18:00:45,594 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 18:00:45,596 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 18:00:45,597 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 18:00:49,797 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T18-00-49//idealista_data.csv
+2025-10-09 18:03:16,768 - scraper_idealista - INFO - CSV file closed
+2025-10-09 18:33:58,544 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 18:33:58,606 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 18:33:58,629 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 18:34:04,617 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T18-34-04//idealista_data.csv
+2025-10-09 18:36:42,450 - scraper_idealista - INFO - CSV file closed
+2025-10-09 18:56:49,330 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 18:56:49,332 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 18:56:49,333 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 18:56:53,585 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T18-56-53//idealista_data.csv
+2025-10-09 19:00:39,569 - scraper_idealista - INFO - CSV file closed
+2025-10-09 19:01:15,944 - scraper_idealista - INFO - Logger setup completed for idealista
+2025-10-09 19:01:15,945 - scraper_idealista - INFO - Configs loaded successfully
+2025-10-09 19:01:15,946 - scraper_idealista - INFO - Mapping loaded successfully
+2025-10-09 19:01:20,405 - scraper_idealista - INFO - CSV created: data/bronze/idealista/run_2025-10-09T19-01-20//idealista_data.csv
+2025-10-09 19:06:10,499 - scraper_idealista - INFO - CSV file closed

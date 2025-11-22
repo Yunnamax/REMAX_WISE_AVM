@@ -1,0 +1,109 @@
+name: "idealista_land_silver"
+description: "Cleaned and standardized land property data"
+version: "1.0"
+
+fields:
+  - name: property_id
+    type: "string"
+    description: "Standardized unique property identifier"
+    required: true
+    
+  - name: source
+    type: "string"
+    description: "Data source identifier"
+    required: true
+    default: "idealista"
+    
+  - name: property_type
+    type: "string"
+    description: "Type of property"
+    required: true
+    default: "land"
+    
+  - name: municipality
+    type: "string"
+    description: "Municipality name standardized"
+    required: true
+    default: "unknown"  
+    
+  - name: price_eur
+    type: "float"
+    description: "Price in EUR (numeric value)"
+    required: true
+    validation:
+      min: 0
+      max: 10000000
+    default: 0.0  
+    
+  - name: area_m2
+    type: "float"
+    description: "Area in square meters (numeric value)"
+    required: true
+    validation:
+      min: 10
+      max: 1000000
+    default: 0.0  
+    
+  - name: title
+    type: "string"
+    description: "Cleaned property title"
+    default: ""  
+    
+  - name: land_status
+    type: "string"
+    description: "Standardized land status"
+    default: ""  
+    
+  - name: agent_name
+    type: "string"
+    description: "Real estate agent name"
+    default: ""  
+    
+  - name: description
+    type: "string"
+    description: "Cleaned property description"
+    default: ""  
+    
+  - name: energy_certificate
+    type: "string"
+    description: "Energy certificate rating"
+    default: ""  
+    
+  - name: last_update_date
+    type: "date"
+    description: "Parsed update date"
+    default: ""  
+    
+  - name: location_text
+    type: "string"
+    description: "Standardized location address"
+    default: ""  
+    
+  - name: url
+    type: "string"
+    description: "Property listing URL"
+    default: ""  
+    
+  - name: price_per_sqm
+    type: "float"
+    description: "Price per square meter (computed)"
+    computed: "price_eur / area_m2"
+    default: 0.0  
+    
+  - name: scraping_timestamp
+    type: "datetime"
+    description: "When data was collected"
+    default: ""
+    
+  - name: data_quality_score
+    type: "float"
+    description: "Score indicating data completeness and quality"
+    validation:
+      min: 0
+      max: 1
+    default: 0.0  
+
+  - name: processing_timestamp
+    type: "datetime"
+    description: "When data was processed in silver layer"
+    default: ""

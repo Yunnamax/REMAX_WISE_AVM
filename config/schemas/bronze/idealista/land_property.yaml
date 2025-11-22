@@ -1,0 +1,57 @@
+# config/schemas/bronze/idealista/land_property.yaml
+name: "idealista_land_bronze"
+description: "Raw land property data from Idealista Portugal"
+version: "1.0"
+
+fields:
+  listing_id:
+    type: "string"
+    description: "Unique listing identifier from Idealista"
+    
+  listing_url:
+    type: "string" 
+    description: "Full URL to the property listing"
+    
+  scraped_city:
+    type: "string"
+    description: "City where property is located"
+    
+  scraped_page:
+    type: "string"
+    description: "Page number where listing was found"
+    
+  scraped_title:
+    type: "string"
+    description: "Property title as displayed on Idealista"
+    
+  scraped_price:
+    type: "string"
+    description: "Price text as shown on website (e.g., '400 000 €')"
+    
+  area_sqm:
+    type: "string"
+    description: "Area text as shown on website (e.g., '120 m²')"
+    
+  land_status:
+    type: "string"
+    description: "Land status or condition"
+    
+  agent_name:
+    type: "string"
+    description: "Name of the real estate agent"
+    
+  description_text:
+    type: "string"
+    description: "Full property description text"
+    
+  energy_certificate:
+    type: "string"
+    description: "Energy certificate rating"
+    
+  update_date:
+    type: "string"
+    description: "Last update date of the listing"
+    
+  location_address:
+    type: "string"
+    description: "Full property address"

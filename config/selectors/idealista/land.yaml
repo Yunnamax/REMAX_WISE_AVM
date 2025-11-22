@@ -1,0 +1,20 @@
+#Idealista land property selectors
+name: "idealista_land_selectors"
+version: "1.0"
+description: "CSS селекторы для извлечения данных о земельных участках с Idealista"
+
+selectors:
+  # Main ad fields
+  listing_card: "div.item-info-container"
+  link: "a.item-link"
+  
+  # ad data
+  title: "span.main-info__title-main"
+  price: "span.info-data-price"
+  area: "div.info-features span:nth-child(1)"
+  land_status: "div.info-features span:nth-child(2)"
+  agent_name: "p.about-advertiser-name"
+  description: "div.adCommentsLanguage"
+  energy_certificate: "div.details-property-feature-two div.details-property_features:last-of-type li span"
+  update_date: "p.date-update-text"
+  location_address: "span.main-info__title-minor"
