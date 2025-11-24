@@ -10,6 +10,7 @@ from .processors.base_processor import BaseProcessor
 from .processors.idealista.land_processor import IdealistaLandProcessor
 from .processors.schema_registry import SchemaRegistry
 from .pipeline_metrics import PipelineMetrics
+from .idempotency_tracker import FileSystemTracker
 
 class BronzeToSilverCoordinator:
     """
@@ -188,32 +189,53 @@ class BronzeToSilverCoordinator:
     def process_all_files(self) -> List[Dict]:
         """Main method that launches the entire process"""
         metrics = PipelineMetrics()
-        metrics.start_pipeline() # - start time
-        # 1. Find all files in Bronze
+        metrics.start_pipeline()
+        
+        # tracer initialization
+        tracker = FileSystemTracker()
+        
         discovered_files = self.discover_bronze_files()
-        metrics.set_total_files(len(discovered_files)) # - total files before processing
-        # 2. Process EACH file in a loop
+        metrics.set_total_files(len(discovered_files))
         processing_results = []
         
         for metadata in discovered_files:
-            self.logger.info(f"Processing: {metadata['bronze_path']}")
-            file_start = time.time() # - start of file processing
-            # Process a single file and collect the result
-            result = self._process_single_file(metadata)
-            processing_results.append(result)
-            file_time = time.time() - file_start # - total time one file was procrssed
+            #bronze_path = metadata['bronze_path']
+            bronze_path = Path(metadata['bronze_path'])
+            
+            # Idempotency check BEFORE processing
+            if not tracker.should_process(bronze_path):
+                print(f"file is already processed: {metadata['bronze_path']}")
+                continue
+            
+            self.logger.info(f"Processing: {bronze_path}")
+            file_start = time.time()
+            
+            try:
+                # Process a single file
+                result = self._process_single_file(metadata)
+                processing_results.append(result)
+                
+                # MARK SUCCESS
+                tracker.mark_processed(bronze_path, "")
+                
+            except Exception as e:
+                # MARK FAILURE  
+                tracker.mark_failed(bronze_path, "", str(e))
+                processing_results.append({
+                    'file_path': str(bronze_path),
+                    'status': 'error',
+                    'message': str(e)
+                })
+            
+            file_time = time.time() - file_start
             metrics.record_file_result(
                 success=(result['status'] == 'success'),
                 processing_time=file_time
             )
-            
-            """self.logger.info(f"Completed: {result['status']}")"""
 
-        metrics.end_pipeline() # - stop collecting pipeline metrics
+        metrics.end_pipeline()
         summary = metrics.get_summary()
-        self.logger.info(f" PIPELINE EXECUTION SUMMARY: {summary}")
-        print(f" PIPELINE EXECUTION SUMMARY: {summary}")        
-        # 3. Return statistics for all files
+        self.logger.info(f"PIPELINE EXECUTION SUMMARY: {summary}")
         return processing_results
     
     def _generate_silver_path(self, metadata: Dict) -> Path:

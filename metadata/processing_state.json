@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "created_at": "2025-11-24T19:06:07.343274",
+  "files": {
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=vila_nova_de_gaia\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:07.343318",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=sintra\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:07.530172",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=porto\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:07.608698",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=oeiras\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:07.681045",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=lisboa\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:07.760315",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=leiria\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:07.892577",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=coimbra\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:08.005945",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=cascais\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:08.082928",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=aveiro\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:08.310491",
+      "error": null
+    },
+    "C:\\Users\\yunna\\OneDrive\\Документы\\remax_wise_avm\\data\\bronze\\idealista\\land\\municipality=almada\\date=2025-11-21\\raw_data.json": {
+      "status": "processed",
+      "processor_type": "",
+      "updated": "2025-11-24T19:06:08.403614",
+      "error": null
+    }
+  },
+  "updated_at": "2025-11-24T19:06:08.403628"
+}
