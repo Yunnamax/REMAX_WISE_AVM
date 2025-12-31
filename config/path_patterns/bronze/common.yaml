@@ -1,0 +1,8 @@
+# config/path_patterns/bronze/common.yaml
+source_detection:
+  method: "position"  
+  position: 0
+
+source_type_mapping:
+  idealista: real_estate_portal
+  imovirtual: real_estate_portal

@@ -1,0 +1,16 @@
+# configs/processor_mapping.yaml
+
+# Base import path (optional, can be resolved automatically)
+base_package: "etl.coordinator.processors"
+
+# Processor mapping
+processors:
+  # === REAL ESTATE PORTALS ===
+  idealista.apartment_rent:
+    module: "src.data_pipeline.processors.bronze_to_silver.idealista"
+    class: "IdealistaApartmentRentProcessor"
+    
+  idealista.land:
+    module: "src.data_pipeline.processors.bronze_to_silver.idealista"
+    class: "IdealistaLandProcessor"
+    

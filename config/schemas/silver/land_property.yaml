@@ -5,7 +5,7 @@ version: "1.0"
 fields:
   - name: property_id
     type: "string"
-    description: "Standardized unique property identifier"
+    description: "Standardized unique property identifier combining source and listing_id"
     required: true
     
   - name: source

@@ -1,0 +1,124 @@
+name: "idealista_apartment_rent_silver"
+description: "Cleaned and standardized apartment rent  property data"
+version: "1.0"
+
+fields:
+  - name: property_id
+    type: "string"
+    description: "Standardized unique property identifier combining source and listing_id"
+    required: true
+
+  - name: source
+    type: "string"
+    description: "Data source identifier"
+    required: true
+    default: "idealista"
+
+  - name: listing_url
+    type: "string"
+    description: "Full URL to access the property listing on Idealista website"
+    required: true
+    default: ""
+
+  - name: title
+    type: "string"
+    description: "Cleaned property title"
+    required: false
+    default: ""
+
+  - name: description
+    type: "string"
+    description: "Cleaned property description"
+    required: false
+    default: ""
+
+  - name: agent_name
+    type: "string"
+    description: "Real estate agent name"
+    required: false
+    default: ""
+
+  - name: location_text
+    type: "string"
+    description: "Standardized property address"
+    required: true
+    default: ""
+
+  - name: municipality
+    type: "string"
+    description: "Validated municipality name"
+    required: true
+    default: ""
+
+  - name: condition
+    type: "string"
+    description: "Standardized property condition"
+    required: false
+    default: "unknown"
+
+  - name: furnished
+    type: "boolean"
+    description: "Boolean indicating if property is furnished"
+    required: false
+    default: false
+
+  - name: energy_certificate
+    type: "string"
+    description: "Standardized energy certificate rating"
+    required: false
+    default: "unknown"
+
+  - name: price_eur
+    type: "decimal"
+    description: "Price converted to numeric EUR value"
+    required: true
+
+  - name: area_m2
+    type: "integer"
+    description: "Area converted to integer square meters"
+    required: true
+
+  - name: num_bedrooms
+    type: "integer"
+    description: "Number of bedrooms as integer"
+    required: true
+    default: 0
+
+  - name: num_bathrooms
+    type: "integer"
+    description: "Number of bathrooms as integer"
+    required: false
+    default: 0
+
+  - name: floor_number
+    type: "integer"
+    description: "Floor number as integer (0 for ground floor, negative for basement)"
+    required: false
+    default: null
+
+  - name: has_elevator
+    type: "boolean"
+    description: "Elevator availability (true=with lift, false=no lift, null=unknown)"
+    required: false
+    default: null
+
+  - name: scraping_timestamp
+    type: "timestamp"
+    description: "Timestamp when data was scraped from Idealista"
+    required: true
+
+  - name: source_updated_at
+    type: "timestamp"
+    description: "Last update timestamp from Idealista"
+    required: false
+
+  - name: processed_at
+    type: "timestamp"
+    description: "Timestamp when data was processed in silver layer"
+    required: true
+
+  - name: data_quality_score
+    type: "float"
+    description: "Data quality score (0-1) based on completeness of critical fields"
+    required: true
+    default: 0.0

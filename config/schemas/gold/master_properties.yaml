@@ -1,0 +1,158 @@
+name: "master_properties"
+description: "Main table for all realestate obejects"
+version: "1.0"
+
+fields:
+  property_id:
+    type: "string"
+    description: "Unique property identifier"
+    primary_key: true
+    
+  source_system:
+    type: "string"
+    description: "Data source system"
+    
+  listing_url:
+    type: "string"
+    description: "listing URL"
+    
+  title:
+    type: "string"
+    description: "Listing title"
+    
+  description:
+    type: "text"
+    description: "Full object description"
+    
+  agent_name:
+    type: "string"
+    description: "Real estate agent name"
+    
+  location_text:
+    type: "string"
+    description: "Location text description"
+    
+  municipality:
+    type: "string"
+    description: "Municipality"
+    
+  property_type:
+    type: "string"
+    description: "Realestate type: apartment_rent, land_sale, etc"
+    
+  transaction_type:
+    type: "string"
+    description: "Transaction type"
+    enum: ["rent", "sale"]
+    
+  price_value:
+    type: "decimal(12,2)"
+    description: "Price value in EUR"
+    
+  price_period:
+    type: "string"
+    description: "Payment period"
+    enum: ["monthly", "weekly", "daily", "yearly", "one_time"]
+    nullable: true
+    
+  area_m2:
+    type: "int"
+    description: "Area in square meters"
+    
+  -municipality_latitude:
+    type: "float"
+    description: "Latitude coordinate of municipality center"
+    nullable: true
+    
+  -municipality_longitude:
+    type: "float"
+    description: "Longitude coordinate of municipality center"
+    nullable: true
+    
+  -district_latitude:
+    type: "float"
+    description: "Latitude coordinate of district/neighborhood"
+    nullable: true
+    
+  -district_longitude:
+    type: "float"
+    description: "Longitude coordinate of district/neighborhood"
+    nullable: true
+    
+  scraped_at:
+    type: "timestamp"
+    description: "When data was collected"
+    
+  source_updated_at:
+    type: "timestamp"
+    description: "When data was updated in the source"
+    
+  processed_at_gold:
+    type: "timestamp"
+    description: "When data was processed in Gold layer"
+    
+  # For SCD Type 2 (add logic later)
+  valid_from:
+    type: "timestamp"
+    description: "Valid from"
+    
+  valid_to:
+    type: "timestamp"
+    description: "Valid to"
+    nullable: true
+    
+  is_current:
+    type: "boolean"
+    description: "Currently valid record"
+
+  data_quality_score:
+    type: "float"
+    description: "Data quality"
+    
+  # NEW ENRICHED FIELDS (for diploma demo)
+  price_per_sqm:
+    type: "decimal(10,2)"
+    description: "Price per square meter (computed)"
+    nullable: true
+    
+  price_category:
+    type: "string"
+    description: "Price category based on distribution"
+    enum: ["budget", "medium", "premium"]
+    nullable: true
+    
+  district:
+    type: "string"
+    description: "District extracted from location"
+    nullable: true
+    
+  is_central_area:
+    type: "boolean"
+    description: "Whether in central area (computed)"
+    nullable: true
+    
+  days_since_last_update:
+    type: "int"
+    description: "how many days is on market relative to scraping date"
+    nullable: true
+    
+  title_length:
+    type: "int"
+    description: "Length of listing title"
+    nullable: true
+    
+  description_length:
+    type: "int"
+    description: "Length of description"
+    nullable: true
+    
+  has_contact_info:
+    type: "boolean"
+    description: "Contains contact information"
+    nullable: true
+    
+  agent_type:
+    type: "string"
+    description: "Type of agent"
+    enum: ["professional", "private"]
+    nullable: true

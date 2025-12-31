@@ -1,0 +1,49 @@
+ЛОГ ФИЛЬТРАЦИИ АРХИТЕКТУРНЫХ КОМПАНИЙ
+==================================================
+Всего обработано: 872 компаний
+Сохранено: 551
+Удалено: 321
+
+ПРИМЕРЫ СОХРАНЕННЫХ КОМПАНИЙ:
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architect' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architecture firm' (содержит 'architect')
+✅ ОСТАВЛЕНО: 'Unknown' - industry: 'Architecture firm' (содержит 'architect')
+
+ПРИМЕРЫ УДАЛЕННЫХ КОМПАНИЙ:
+❌ УДАЛЕНО: 'Unknown' - industry: 'Interior designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Farm' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Graphic designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Civil engineering company' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Home builder' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Interior designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Real estate agent' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Construction Company' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Interior designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Interior designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Graphic designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Interior designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Tattoo artist' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Real estate agency' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Graphic designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Interior designer' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Building firm' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Engineering consultant' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Home builder' (нет ключевых слов)
+❌ УДАЛЕНО: 'Unknown' - industry: 'Home builder' (нет ключевых слов)

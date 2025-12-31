@@ -1,0 +1,77 @@
+# config/schemas/bronze/idealista/apartment_property_rent.yaml
+name: "idealista_apartment_rent_bronze"
+description: "Raw apartment rent property data from Idealista Portugal"
+version: "1.0"
+
+fields:
+  listing_id:
+    type: "string"
+    description: "Unique identifier for the property listing from Idealista"
+
+  listing_url:
+    type: "string"
+    description: "Full URL to access the property listing on Idealista website"
+
+  title:
+    type: "string" 
+    description: "Main title of the property listing as displayed on Idealista"
+
+  description:
+    type: "string"
+    description: "Detailed description text provided for the property listing"
+
+  agent_name:
+    type: "string"
+    description: "Name of the real estate agent or agency managing the listing"
+
+  location_address:
+    type: "string"
+    description: "Full street address of the property location"
+
+  municipality:
+    type: "string"
+    description: "Municipality where the property is located"
+
+  condition:
+    type: "string"
+    description: "Condition of the property (new, good, needs renovation, etc.)"
+
+  furnished:
+    type: "string"
+    description: "Indicates if the property is furnished (yes/no/partially)"
+
+  energy_certificate:
+    type: "string"
+    description: "Energy efficiency certificate rating of the property"
+
+  scraped_price:
+    type: "string"
+    description: "Price as displayed on website in original format with currency"
+
+  area_sqm:
+    type: "string"
+    description: "Area in square meters as shown in original website format"
+
+  num_bedrooms:
+    type: "string"
+    description: "Number of bedrooms as displayed on the listing"
+
+  num_bathrooms:
+    type: "string"
+    description: "Number of bathrooms as displayed on the listing"
+
+  floor_number:
+    type: "string"
+    description: "Floor number where the apartment is located"
+
+  has_elevator:
+    type: "string"
+    description: "Indicates presence of elevator in the building"
+
+  scraped_at:
+    type: "string"
+    description: "Timestamp when the data was scraped from Idealista"
+
+    update_date:
+    type: "string"
+    description: "Last update date of the listing as shown on Idealista"

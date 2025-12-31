@@ -31,41 +31,62 @@ class BaseProcessor(ABC):
         
     # ==================== Main methods ====================
     
-    def process_file(self, input_path: Path, output_path: Path) -> bool:
-            """Main file-processing method"""
-            self.logger.info(f"Starting processing: {input_path}")
-            self.processing_start_time = datetime.now()
+    def process_file(self, input_path: Path) -> pd.DataFrame:
+        """
+        Main file-processing method.
+        
+        Processes a file from Bronze layer and returns a DataFrame with transformed data.
+        Used by the coordinator for group processing.
+        
+        Args:
+            input_path: Path to the Bronze layer JSON file
             
-            try:
-                # EXTRACT
-                raw_data = self.extract_data(input_path)
-                if not raw_data:
-                    self.logger.warning(f"No data extracted from {input_path}")
-                    return False
-                
-                # TRANSFORM
-                transformed_data = self.transform_data(raw_data)
-                if not transformed_data:
-                    self.logger.warning(f"No data after transformation from {input_path}")
-                    return False
-                
-                # VALIDATE
-                if not self.validate_data(transformed_data):
-                    self.logger.error(f"Data validation failed for {input_path}")
-                    return False
-                
-                # SAVE
-                self.save_data(transformed_data, output_path)
-                
-                # UPDATE METRICS
-                self.processed_records += len(transformed_data)
-                
-                self.logger.info(f"Successfully processed {len(transformed_data)} records to {output_path}")
-                return True
-                
-            except Exception as e:
-                self.logger.error(f"Error processing {input_path}: {e}")
-                return False
+        Returns:
+            DataFrame with processed data ready for Silver layer
+            
+        Raises:
+            ValueError: If no data extracted, transformed, or validation failed
+            Exception: Any other processing error
+        """
+        self.logger.info(f"Starting processing: {input_path}")
+        self.processing_start_time = datetime.now()
+        
+        try:
+            # 1. EXTRACT - read JSON data
+            raw_data = self.extract_data(input_path)
+            if not raw_data:
+                error_msg = f"No data extracted from {input_path}"
+                self.logger.warning(error_msg)
+                raise ValueError(error_msg)
+            
+            # 2. TRANSFORM - apply business logic
+            transformed_data = self.transform_data(raw_data)
+            if not transformed_data:
+                error_msg = f"No data after transformation from {input_path}"
+                self.logger.warning(error_msg)
+                raise ValueError(error_msg)
+            
+            # 3. VALIDATE - check against Silver schema
+            if not self.validate_data(transformed_data):
+                error_msg = f"Data validation failed for {input_path}"
+                self.logger.error(error_msg)
+                raise ValueError(error_msg)
+            
+            # 4. CREATE DATAFRAME - convert to DataFrame
+            df = pd.DataFrame(transformed_data)
+            
+            # 5. UPDATE METRICS (optional - для внутренней статистики процессора)
+            self.processed_records += len(transformed_data)
+            
+            self.logger.info(
+                f"Successfully processed {len(transformed_data)} records from {input_path}"
+            )
+            return df
+            
+        except Exception as e:
+            self.logger.error(f"Error processing {input_path}: {e}")
+            # Rethrow the exception so that coordinator can handle it
+            raise
 
     def extract_data(self, file_path: Path) -> List[Dict[str, Any]]:
         """JSON file data extraction from Bronze layer"""
@@ -107,21 +128,6 @@ class BaseProcessor(ABC):
                 return False
         
         return True  # Simple validation - only checks required fields exist
-
-    def save_data(self, transformed_data: List[Dict], output_path: Path):
-        """Saves data to Silver layer"""
-        try:
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Create DataFrame and save as Parquet
-            df = pd.DataFrame(transformed_data)
-            df.to_parquet(output_path, index=False)
-            
-            self.logger.info(f"Saved {len(transformed_data)} records to {output_path}")
-            
-        except Exception as e:
-            self.logger.error(f"Error saving data to {output_path}: {e}")
-            raise
 
     # ==================== HELPER METHODS ====================
 

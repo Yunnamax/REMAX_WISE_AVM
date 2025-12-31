@@ -1,0 +1,29 @@
+# config/path_patterns/bronze/real_estate_portal.yaml
+pattern: "{source}/{property_type}/municipality={municipality}/date={date}/raw_data.json"
+components:
+  - name: source
+    position: 0
+    type: string
+    
+  - name: property_type
+    position: 1
+    type: string
+    allowed_values: ["apartment_rent", "land", "house_sale"]  # validation
+    
+  - name: municipality
+    position: 2
+    type: string
+    prefix: "municipality="
+    suffix: ""  # in case some part should be cut off 
+    
+  - name: date
+    position: 3
+    type: date
+    prefix: "date="
+    format: "YYYY-MM-DD"  # dormat validation
+grouping_keys:  
+  - property_type
+  - date
+processor_keys:
+  - source
+  - property_type

@@ -1,0 +1,91 @@
+name: "apartments_rent_details"
+description: "Apartments for rent details"
+version: "1.0"
+
+fields:
+  property_id:
+    type: "string"
+    description: "master table link"
+    foreign_key: "master_properties.property_id"
+    
+  num_bedrooms:
+    type: "int"
+    description: "Number of bedrooms"
+    
+  num_bathrooms:
+    type: "int"
+    description: "Numbers of bathrooms"
+    
+  floor_number:
+    type: "int"
+    description: "Floor"
+    nullable: true
+    
+  has_elevator:
+    type: "boolean"
+    description: "Has an elevator"
+    nullable: true
+    
+  furnished:
+    type: "boolean"
+    description: "Is furnished"
+    nullable: true
+    
+  condition:
+    type: "string"
+    description: "Condition"
+    
+  energy_certificate:
+    type: "string"
+    description: "Energy certificate"
+    
+  # NEW ENRICHED FIELDS (for diploma demo)
+  floor_category:
+    type: "string"
+    description: "Categorized floor level"
+    enum: ["ground", "low", "mid", "high", "penthouse"]
+    nullable: true
+    
+  condition_normalized:
+    type: "string"
+    description: "Normalized condition"
+    enum: ["excellent", "good", "fair", "poor"]
+    nullable: true
+    
+  energy_rating:
+    type: "string"
+    description: "Energy efficiency rating"
+    enum: ["A", "B", "C", "D", "E", "F", "G"]
+    nullable: true
+    
+  energy_efficiency_score:
+    type: "int"
+    description: "Numeric energy efficiency score"
+    enum: [1, 2, 3, 4, 5, 6, 7]
+    nullable: true
+    
+  price_per_bedroom:
+    type: "decimal(10,2)"
+    description: "Price per bedroom (computed from master)"
+    nullable: true
+    
+  area_per_bedroom:
+    type: "decimal(10,2)"
+    description: "Area per bedroom (m² per bedroom)"
+    nullable: true
+    
+  property_age_group:
+    type: "string"
+    description: "Estimated age group"
+    enum: ["new", "renovated", "standard", "old"]
+    nullable: true
+    
+  has_balcony:
+    type: "boolean"
+    description: "Has balcony (extracted from description)"
+    nullable: true
+    
+  has_parking:
+    type: "boolean"
+    description: "Has parking (extracted from description)"
+    nullable: true
