@@ -22,7 +22,7 @@ The system implements a three-layer data architecture commonly used in modern da
 
 1. **Bronze Layer**: Stores raw JSON data as received from data sources with minimal transformation
 2. **Silver Layer**: Contains cleaned, validated, and standardized data ready for analysis
-3. **Gold Layer**: Aggregated analytics and business intelligence data (planned)
+3. **Gold Layer**: Aggregated analytics and business intelligence data 
 
 ### System Components
 
