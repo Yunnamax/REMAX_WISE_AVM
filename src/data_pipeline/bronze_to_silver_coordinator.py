@@ -54,6 +54,8 @@ class BronzeToSilverCoordinator:
         Returns:
             List of dictionaries with information about discovered files
         """
+        config_dir = self.project_root  /"config"
+        bronze_root = self.bronze_base_path
         # Step 1: Initialize an empty list for results
         discovered_files = []
         
@@ -89,7 +91,7 @@ class BronzeToSilverCoordinator:
                 self.logger.debug(f"Processing file: {file_path}")
                 
                 # Extract metadata from the path structure
-                metadata = self._parse_bronze_path(file_path)
+                metadata = self._parse_bronze_path(file_path, bronze_root, config_dir)
                 
                 # If metadata is successfully extracted and the source is supported
                 if metadata and self._is_supported_source(metadata['source']):
@@ -111,14 +113,14 @@ class BronzeToSilverCoordinator:
         
         return discovered_files
     
-    def parse_bronze_path(file_path, bronze_root, config_dir):
+    def _parse_bronze_path( self, file_path, bronze_root, config_dir):
         try:
             # 1. Relative path
             relative = file_path.relative_to(bronze_root)
             parts = relative.parts
             
             # 2. Loading common.yaml
-            common_path = config_dir / "bronze" / "common.yaml"
+            common_path = config_dir / "path_patterns" / "bronze" / "common.yaml"
             with open(common_path) as f:
                 common = yaml.safe_load(f)
             
@@ -130,7 +132,7 @@ class BronzeToSilverCoordinator:
             source_type = common["source_type_mapping"][source]
             
             # 5. Loading config file for the type
-            type_path = config_dir / "bronze" / f"{source_type}.yaml"
+            type_path = config_dir / "path_patterns" / "bronze" / f"{source_type}.yaml"
             with open(type_path) as f:
                 type_config = yaml.safe_load(f)
             
@@ -149,7 +151,7 @@ class BronzeToSilverCoordinator:
             # 7. Adding service fields
             metadata["bronze_path"] = str(file_path)
             metadata["source"] = source
-            
+            metadata["source_type"] = source_type
             return metadata
             
         except Exception as e:
@@ -182,10 +184,10 @@ class BronzeToSilverCoordinator:
                     These are the field names to use when building processor keys later
         """
         if config_dir is None:
-            config_dir = self.project_root / "configs"
+            config_dir = self.project_root / "config"
 
         # Load common.yaml to map source -> source_type
-        common_path = config_dir / "bronze" / "common.yaml"
+        common_path = config_dir / "path_patterns" / "bronze" / "common.yaml"
         with open(common_path, 'r') as f:
             common_config = yaml.safe_load(f)
 
@@ -210,7 +212,7 @@ class BronzeToSilverCoordinator:
 
             # Load configuration for this source type ( with cacheing)
             if source_type not in source_type_config_cache:
-                source_type_config_path = config_dir / "bronze" / f"{source_type}.yaml"
+                source_type_config_path = config_dir / "path_patterns" / "bronze" / f"{source_type}.yaml"
                 if not source_type_config_path.exists():
                     self.logger.warning(f"Config for {source_type} not found, skipping")
                     continue
@@ -292,8 +294,8 @@ class BronzeToSilverCoordinator:
             Logs errors for import failures
         """
         # 1. Determine the path to the config (same as in parse_bronze_path)
-        config_dir = self.project_root / "configs"
-        mapping_path = config_dir / "processor_mapping.yaml"
+        config_dir = self.project_root / "config"
+        mapping_path = config_dir / "processors_mapping" / "bronze_silver"/"processors_mapping.yaml"
         
         # 2. Load the config (same as in parse_bronze_path)
         with open(mapping_path) as f:
@@ -375,9 +377,8 @@ class BronzeToSilverCoordinator:
                 # Get the processor for this file
                 processor = self._get_processor(
                     metadata=metadata,
-                   processor_key_names=processor_key_names,
-                   group_key=group_key
-                )
+                   processor_key_names=processor_key_names             
+                    )
                 
                 if processor is None:
                     self.logger.warning(f"No processor for {metadata['source']}/{metadata['property_type']}")
@@ -423,8 +424,6 @@ class BronzeToSilverCoordinator:
         # 4. Generate output path and save
         try:
             output_path = self._generate_silver_path_for_group(group_key, metadata_list)
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            
             # Save the combined DataFrame
             combined_df.to_parquet(output_path)
             
@@ -530,14 +529,43 @@ class BronzeToSilverCoordinator:
         summary = metrics.get_summary()
         self.logger.info(f"PIPELINE EXECUTION SUMMARY: {summary}")
         return processing_results
-    
-    def _generate_silver_path(self, metadata: Dict) -> Path:
-        """Generates peth to Silver layer"""
-        return (
-            self.silver_base_path / 
-            metadata['property_type'] / 
-            f"municipality={metadata['municipality']}" / 
-            f"date={metadata['date']}" / 
-            "processed_data.parquet"
-        )
-    
+
+    def _generate_silver_path_for_group(self, group_key: tuple, metadata_list: List[Dict]) -> Path:
+        """
+        Generates path for saving combined group data to Silver layer.
+        
+        Structure: silver/{source_type}/{grouping_key1}/{grouping_key2}/.../combined.parquet
+        
+        Args:
+            group_key: Tuple where first element is source_type, rest are grouping values
+                    e.g., ('real_estate_portal', 'apartment_rent', '2025-01-15')
+            metadata_list: List of metadata dictionaries for files in the group
+                        (currently not used, kept for future extensions)
+        
+        Returns:
+            Path object for saving the combined parquet file
+        """
+        if not group_key:
+            raise ValueError("Group key cannot be empty")
+        
+        # Validate group_key has at least source_type
+        if len(group_key) < 2:  # source_type + at least one grouping value
+            self.logger.warning(f"Group key too short: {group_key}. Expected at least (source_type, grouping_value1)")
+        
+        # 1. Start with silver base path
+        path = self.silver_base_path
+        
+        # 2. Add each element of group_key as a directory
+        #    group_key[0] = source_type, group_key[1:] = grouping values
+        for element in group_key:
+            path = path / str(element)
+        
+        # 3. Add filename
+        path = path / "combined.parquet"
+        
+        # 4. Create parent directories if they don't exist
+        #    This ensures we can write the file
+        path.parent.mkdir(parents=True, exist_ok=True)
+        
+        self.logger.debug(f"Generated Silver path for group {group_key}: {path}")
+        return path  

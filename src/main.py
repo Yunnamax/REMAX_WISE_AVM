@@ -10,17 +10,17 @@ from src.data_pipeline.bronze_to_silver_coordinator import BronzeToSilverCoordin
 from src.data_pipeline.silver_to_gold_coordinator import SilverToGoldCoordinator
 
 def main():
-    # Используем тот же project_root что и выше
-    coordinator1 = BronzeToSilverCoordinator(project_root=project_root)
-    coordinator2 = SilverToGoldCoordinator(project_root=project_root)
     
-    # Запускаем обработку
+    coordinator1 = BronzeToSilverCoordinator(project_root=project_root)
+    #coordinator2 = SilverToGoldCoordinator(project_root=project_root)
+    
+
     results1 = coordinator1.process_all_files()
-    results2 = coordinator2.process_all_files()
-    # Выводим результаты
+    #results2 = coordinator2.process_all_files()
+    
     print("Processing is over")
     print(f"Files rocessed: {len(results1)}")
-    print(f"Files rocessed: {len(results2)}")
+    #print(f"Files rocessed: {len(results2)}")
 
 if __name__ == "__main__": 
     main()
