@@ -23,13 +23,13 @@ class BaseScraper(ABC):
         self.municipality = municipality    # "lisbon", "porto"
         self.scraper_id = f"{source_name}_{property_type}_{municipality}"
         
-        #  State Pattern
+        # State Pattern
         self.status = "READY"  # READY, RUNNING, COMPLETED, FAILED, MANUAL_PENDING
         self.start_time: Optional[datetime] = None
         self.end_time: Optional[datetime] = None
         self.records_collected = 0
         
-        #  Results end errors
+        # Results and errors
         self.last_successful_run: Optional[datetime] = None
         self.error_message: Optional[str] = None
         self.collected_data: List[Dict] = []
@@ -41,7 +41,7 @@ class BaseScraper(ABC):
         self.project_root = self._find_project_root()
 
     def _find_project_root(self) -> Path:
-        """ finds root project directory (where data/ is located)"""
+        """Finds the root project directory (where data/ is located)."""
         current_file = Path(__file__).resolve() 
 
         for parent in current_file.parents:
@@ -54,12 +54,12 @@ class BaseScraper(ABC):
     
     def run(self) -> List[Dict]:
         """
-        ГЛАВНЫЙ МЕТОД - Точка входа для оркестратора.
+        MAIN METHOD – Entry point for the orchestrator.
         
-        Теория: Facade Pattern - предоставляет простой интерфейс
-        к сложной подсистеме (весь процесс скрапинга).
+        Theory: Facade Pattern – provides a simple interface
+        to a complex subsystem (the entire scraping process).
         """
-        # 3.1 ПОДГОТОВКА
+        # 3.1 PREPARATION
         self.status = "RUNNING"
         self.start_time = datetime.now()
         self.error_message = None
@@ -67,39 +67,39 @@ class BaseScraper(ABC):
         try:
             self.logger.info(f"Starting scraper: {self.scraper_id}")
             
-            # 3.2 ВЫПОЛНЕНИЕ (абстрактный метод - реализуется в наследниках)
+            # 3.2 EXECUTION (abstract method – implemented in subclasses)
             self.collected_data = self._execute_scraping()
             self.records_collected = len(self.collected_data)
             
-            # 3.3 СОХРАНЕНИЕ РЕЗУЛЬТАТОВ
+            # 3.3 SAVE RESULTS
             if self.collected_data:
                 output_path = self._generate_output_path()
                 self._save_to_bronze(output_path)
                 self.last_successful_run = datetime.now()
             
-            # 3.4 УСПЕШНОЕ ЗАВЕРШЕНИЕ
+            # 3.4 SUCCESSFUL COMPLETION
             self.status = "COMPLETED"
             self.logger.info(f"Scraper completed: {self.records_collected} records")
             
         except Exception as e:
-            # 3.5 ОБРАБОТКА ОШИБОК
+            # 3.5 ERROR HANDLING
             self.status = "FAILED"
             self.error_message = str(e)
             self.logger.error(f"Scraper failed: {str(e)}")
             raise
         
         finally:
-            # 3.6 ФИНАЛИЗАЦИЯ (всегда выполняется)
+            # 3.6 FINALIZATION (always executed)
             self.end_time = datetime.now()
             
         return self.collected_data
 
     def get_status(self) -> Dict[str, Any]:
         """
-        МЕТОД МОНИТОРИНГА - возвращает состояние скрапера.
+        MONITORING METHOD – returns the current scraper state.
         
-        Теория: Memento Pattern - предоставляет снимок состояния
-        объекта без раскрытия реализации.
+        Theory: Memento Pattern – provides a snapshot of the object's
+        state without exposing its internal implementation.
         """
         duration = None
         if self.start_time and self.end_time:
@@ -118,11 +118,11 @@ class BaseScraper(ABC):
         }
     
     def is_healthy(self) -> bool:
-        """Проверка готовности скрапера к работе"""
+        """Checks whether the scraper is ready to run."""
         return self.status in ["READY", "COMPLETED"]
     
     def needs_to_run(self) -> bool:
-        """Определение необходимости запуска по расписанию"""
+        """Determines whether the scraper should run based on schedule."""
         if not self.last_successful_run:
             return True
             
@@ -130,29 +130,29 @@ class BaseScraper(ABC):
         time_since_last_run = (datetime.now() - self.last_successful_run).total_seconds() / 3600
         return time_since_last_run >= update_frequency
 
-    #  ABSTRACT METHODS (contract for subclasses) ===
+    # ABSTRACT METHODS (contract for subclasses) ===
     
     @abstractmethod
     def _execute_scraping(self) -> List[Dict]:
         """
-        АБСТРАКТНЫЙ МЕТОД - должен быть реализован в каждом дочернем классе.
+        ABSTRACT METHOD – must be implemented in each subclass.
         
-        Теория: Strategy Pattern - каждая стратегия скрапинга
-        реализует этот метод по-своему.
+        Theory: Strategy Pattern – each scraping strategy
+        implements this method in its own way.
         """
         pass
     
     @abstractmethod
     def get_scraping_instructions(self) -> Dict[str, Any]:
         """
-        АБСТРАКТНЫЙ МЕТОД - инструкции для ручного скрапинга.
+        ABSTRACT METHOD – instructions for manual scraping.
         
-        Теория: Command Pattern - инкапсулирует запрос как объект,
-        позволяя параметризовать клиенты с различными запросами.
+        Theory: Command Pattern – encapsulates a request as an object,
+        allowing clients to parameterize with different requests.
         """
         pass
 
-    #   HELPER METHODS (common logic) ===
+    # HELPER METHODS (common logic) ===
     
     def _generate_output_path(self) -> Path:
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -163,10 +163,10 @@ class BaseScraper(ABC):
     
     def _save_to_bronze(self, output_path: Path):
         """
-        Сохранение в bronze слой.
+        Save data to the bronze layer.
         
-        Теория: Data Transfer Object (DTO) - стандартизированная
-        структура для передачи данных между процессами.
+        Theory: Data Transfer Object (DTO) – standardized
+        structure for transferring data between processes.
         """
         output_path.parent.mkdir(parents=True, exist_ok=True)
         
@@ -189,7 +189,7 @@ class BaseScraper(ABC):
         self.logger.info(f"Data saved to: {output_path}")
 
     def _load_scraper_config(self) -> Dict:
-        """Загрузка конфигурации (Strategy Pattern)"""
+        """Load scraper configuration (Strategy Pattern)."""
         return {
             'update_frequency_hours': 24,
             'max_records_per_run': 1000,
@@ -198,7 +198,7 @@ class BaseScraper(ABC):
         }
     
     def _setup_logging(self):
-        """Настройка логирования (Observer Pattern)"""
+        """Configure logging (Observer Pattern)."""
         logger = logging.getLogger(self.scraper_id)
         if not logger.handlers:
             handler = logging.StreamHandler()
@@ -210,11 +210,11 @@ class BaseScraper(ABC):
             logger.setLevel(logging.INFO)
         return logger
 
-    #   METHODS FOR MANUAL SCRAPING ===
+    # METHODS FOR MANUAL SCRAPING ===
     
     def _handle_manual_scraping(self) -> List[Dict]:
         """
-        Обработка ручного скрапинга - ТОЛЬКО создание директорий.
+        Handle manual scraping – ONLY directory creation.
         """
         instructions = self.get_scraping_instructions()
         
@@ -228,19 +228,19 @@ class BaseScraper(ABC):
         output_path = self._generate_output_path()
         output_path.parent.mkdir(parents=True, exist_ok=True)
         
-        print(f"\n Folders created: {output_path.parent}")
-        print(" You can save files now to the specified directory")
+        print(f"\nFolders created: {output_path.parent}")
+        print("You can now save files to the specified directory")
         input("Press Enter to finish...")
         
-        # Return empty list
+        # Return empty result
         return []
     
     def _load_manual_results(self) -> List[Dict]:
         """
-        Загрузка результатов ручного скрапинга.
+        Load results of manual scraping.
         
-        Теория: Adapter Pattern - адаптирует результаты ручного
-        скрапинга к стандартному формату системы.
+        Theory: Adapter Pattern – adapts manual scraping
+        results to the system’s standard format.
         """
         output_dir = Path(f"data/bronze/{self.source_name}/{self.property_type}/{self.municipality}")
         if not output_dir.exists():
