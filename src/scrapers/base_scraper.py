@@ -13,15 +13,14 @@ class BaseScraper(ABC):
     Implements the Template Method pattern.
     """
     
-    def __init__(self, source_name: str, property_type: str, municipality: str):
+    def __init__(self, source_name: str, **context_kwargs):
         """
         Initialize the common state of the scraper.
         """
         # IDENTIFICATION (for the orchestrator)
         self.source_name = source_name      # "idealista", "architizer"
-        self.property_type = property_type  # "land", "apartment"  
-        self.municipality = municipality    # "lisbon", "porto"
-        self.scraper_id = f"{source_name}_{property_type}_{municipality}"
+        self.context = context_kwargs   
+        self.scraper_id = self._generate_scraper_id()
         
         # State Pattern
         self.status = "READY"  # READY, RUNNING, COMPLETED, FAILED, MANUAL_PENDING
@@ -39,6 +38,11 @@ class BaseScraper(ABC):
         self.logger = self._setup_logging()        # Observer Pattern
 
         self.project_root = self._find_project_root()
+
+    @property
+    @abstractmethod
+    def source_type(self) -> str:
+        pass
 
     def _find_project_root(self) -> Path:
         """Finds the root project directory (where data/ is located)."""
@@ -130,7 +134,7 @@ class BaseScraper(ABC):
         time_since_last_run = (datetime.now() - self.last_successful_run).total_seconds() / 3600
         return time_since_last_run >= update_frequency
 
-    # ABSTRACT METHODS (contract for subclasses) ===
+    # ABSTRACT METHODS (contract for subclasses) ===       
     
     @abstractmethod
     def _execute_scraping(self) -> List[Dict]:
@@ -153,39 +157,81 @@ class BaseScraper(ABC):
         pass
 
     # HELPER METHODS (common logic) ===
+    def _generate_scraper_id(self):
+        """Generates an ID based on source_name and key context parameters"""
+        parts = [self.source_name]
+
+        # For backward compatibility, key parameters can be added
+        # But now this is optional
+        key_params = ['property_type', 'municipality', 'layer_type', 'data_type']
+        for key in key_params:
+            if key in self.context:
+                parts.append(str(self.context[key]))
+
+        return '_'.join(parts)
     
     def _generate_output_path(self) -> Path:
-        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        """
+        Generates a path for saving.
+        BASE METHOD - can be overridden in child classes.
+        """
         date = datetime.now().strftime('%Y-%m-%d')
-        
-        # Using absolute path to data in the project root
-        return self.project_root / "data" / "bronze" / self.source_name / self.property_type / f"municipality={self.municipality}" / f"date={date}" / f"raw_data.json"
-    
+
+        # 1. Base path (unchanging for all scrapers)
+        path_parts = [
+            self.project_root,
+            "data",
+            "bronze",
+            self.source_name,
+        ]
+
+        # 2. ADDITIONAL LEVEL - source type (if available)
+        # Helps to group logically similar sources
+        if hasattr(self, 'source_type') and self.source_type:
+            path_parts.append(self.source_type)
+
+        # 3. CONTEXT PARAMETERS (dynamic)
+        # Add only if present in context
+        # Sort for determinism
+        for key, value in sorted(self.context.items()):
+            if value is not None:
+                path_parts.append(f"{key}={value}")
+
+        # 4. DATE and FILE
+        path_parts.extend([
+            f"date={date}",
+            "raw_data.json"
+        ])
+
+        return Path(*path_parts)
+
     def _save_to_bronze(self, output_path: Path):
-        """
-        Save data to the bronze layer.
-        
-        Theory: Data Transfer Object (DTO) – standardized
-        structure for transferring data between processes.
-        """
+        """Save to bronze layer - UNIVERSAL"""
         output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # TODO: fix metadata adding to general info
+        # Temporarily saving only data without metadata structure
+        # Original structure (commented out for now):
+        # result = {
+        #     "metadata": {
+        #         "scraping_timestamp": datetime.now().isoformat(),
+        #         "source": self.source_name,
+        #         "source_type": getattr(self, 'source_type', 'unknown'),  # if defined
+        #         "context": self.context,  # ENTIRE context
+        #         "records_count": len(self.collected_data),
+        #         "scraper_status": self.status,
+        #         "scraper_id": self.scraper_id
+        #     },
+        #     "data": self.collected_data
+        # }
         
-        result = {
-            "metadata": {
-                "scraping_timestamp": datetime.now().isoformat(),
-                "source": self.source_name,
-                "property_type": self.property_type,
-                "municipality": self.municipality,
-                "records_count": len(self.collected_data),
-                "scraper_status": self.status,
-                "scraper_id": self.scraper_id
-            },
-            "data": self.collected_data
-        }
-        
+        # TEMPORARY: Save only data for MVP
+        # Will restore metadata structure when implementing configuration-based system
+        result = self.collected_data
+
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(result, f, indent=2, ensure_ascii=False, default=str)
-        
+
         self.logger.info(f"Data saved to: {output_path}")
 
     def _load_scraper_config(self) -> Dict:
@@ -236,23 +282,44 @@ class BaseScraper(ABC):
         return []
     
     def _load_manual_results(self) -> List[Dict]:
-        """
-        Load results of manual scraping.
-        
-        Theory: Adapter Pattern – adapts manual scraping
-        results to the system’s standard format.
-        """
-        output_dir = Path(f"data/bronze/{self.source_name}/{self.property_type}/{self.municipality}")
+        """Load manual results - UNIVERSAL"""
+        # Build the base path (without date)
+        base_parts = [
+            self.project_root,
+            "data",
+            "bronze",
+            self.source_name,
+        ]
+
+        # Add source_type if available
+        if hasattr(self, 'source_type') and self.source_type:
+            base_parts.append(self.source_type)
+
+        # Add context parameters
+        for key, value in sorted(self.context.items()):
+            if value is not None:
+                base_parts.append(f"{key}={value}")
+
+        output_dir = Path(*base_parts)
+
         if not output_dir.exists():
             return []
-            
-        json_files = list(output_dir.glob("*.json"))
+
+        # Search in all subdirectories (including date=*)
+        json_files = list(output_dir.rglob("*.json"))
+
         if not json_files:
             return []
-            
+
+        # Take the newest file
         latest_file = max(json_files, key=lambda x: x.stat().st_mtime)
-        
-        with open(latest_file, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            
-        return data.get('data', [])
+
+        try:
+            with open(latest_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+            return data.get('data', [])
+        except Exception as e:
+            self.logger.error(f"Error loading {latest_file}: {e}")
+            return []
+
